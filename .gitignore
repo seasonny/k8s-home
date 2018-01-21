@@ -1,0 +1,12 @@
+# General OS and IDE things
+.DS_Store
+.vscode/
+
+# Catch all for secret definitions
+secret.yaml
+secrets.yaml
+
+# Home Assistant Config
+home-assistant/config/*
+!home-assistant/config/*.yaml
+home-assistant/config/secrets.yaml
