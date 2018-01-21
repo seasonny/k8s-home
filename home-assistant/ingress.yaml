@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: home-assistant
+  namespace: k8s-home
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: hass.home.evns.io
+    http:
+      paths:
+      - backend:
+          serviceName: home-assistant
+          servicePort: 80

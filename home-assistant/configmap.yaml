@@ -1,0 +1,189 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: hass-config
+  namespace: k8s-home
+data:
+  automations.yaml: |
+    # Automations
+    - alias: Samuel's Bedtime
+      trigger:
+      - at: '20:00:00'
+        platform: time
+      action:
+        entity_id: light.samuels_light
+        service: light.turn_off
+    - alias: Electric Blanket On
+      action:
+        entity_id: switch.electric_blanket
+        service: switch.turn_on
+      trigger:
+      - at: '22:30:00'
+        platform: time
+    - alias: Electric Blanket Off
+      action:
+        entity_id: switch.electric_blanket
+        service: switch.turn_off
+      trigger:
+      - at: '23:10:00'
+        platform: time
+  configuration.yaml: |
+    # - - - - - - - - - - - - - - - - - - - -
+    #    Core Configuration
+    # - - - - - - - - - - - - - - - - - - - -
+    homeassistant:
+      # Name of the location where Home Assistant is running
+      name: Home
+      # Location required to calculate the time the sun rises and sets
+      latitude: 51.98781
+      longitude: -0.18835
+      # Impacts weather/sunrise data (altitude above sea level in meters)
+      elevation: 0
+      # metric for Metric, imperial for Imperial
+      unit_system: metric
+      # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      time_zone: Europe/London
+      # Customization file
+      #customize: !include customize.yaml
+
+    sun:
+
+    # - - - - - - - - - - - - - - - - - - - -
+    #    MQTT Broker Config
+    # - - - - - - - - - - - - - - - - - - - -
+    mqtt:
+      broker: 192.168.0.101
+      port: 1883
+
+    # - - - - - - - - - - - - - - - - - - - -
+    #    Google Assistant
+    # - - - - - - - - - - - - - - - - - - - -
+    google_assistant:
+      project_id: !secret google-project
+      client_id: !secret google-client_id
+      access_token: !secret google-access_token
+      api_key: !secret google-api_key 
+      exposed_domains:
+        - switch
+        - light
+        - group
+
+    # - - - - - - - - - - - - - - - - - - - -
+    #    Core Enables
+    # - - - - - - - - - - - - - - - - - - - -
+    http:
+      api_password: !secret http_password
+      base_url: hass.home.evns.io
+
+    # Enable frontend and configuration panels
+    frontend:
+    config:
+
+    # Discover some devices automatically
+    discovery:
+
+    # Allows you to issue voice commands from the frontend in enabled browsers
+    conversation:
+
+    # Enables support for tracking state changes over time
+    history:
+
+    # View all events in a logbook
+    logbook:
+
+    # Text to speech
+    tts:
+      - platform: google
+
+    # Chromecast
+    media_player:
+      - platform: cast
+        host: 192.168.0.110 # fixed ip set by router
+      - platform: cast
+        host: 192.168.0.111 # fixed ip set by router
+
+    device_tracker:
+      - platform: sky_hub
+        host: 192.168.0.1
+        track_new_devices: no
+
+    # - - - - - - - - - - - - - - - - - - - -
+    #    Includes
+    # - - - - - - - - - - - - - - - - - - - -
+
+    switch: !include switch.yaml
+    light: !include light.yaml
+    group: !include groups.yaml
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+  groups.yaml: |
+    # Entity Groups
+    living_room:
+      name: "Living Room"
+      view: yes
+      entities:
+        - light.living_room_alcove
+        - light.living_room_side_light
+        - switch.test_device
+        - media_player.living_room_tv
+    main_bedroom:
+      name: "Main Bedroom"
+      view: yes
+      entities:
+        - switch.electric_blanket
+        - media_player.bedroom_tv
+    samuel_bedroom:
+      name: "Samuel's Bedroom"
+      view: yes
+      entities:
+        - light.samuels_light
+  light.yaml: |
+    # Light definitions
+    - platform: mqtt
+      name: "Living Room Alcove"
+      state_topic: "stat/livingroom/alcovelight/POWER"
+      command_topic: "cmnd/livingroom/alcovelight/POWER"
+      retain: true
+    - platform: mqtt
+      name: "Living Room Side Light"
+      state_topic: "stat/livingroom/sidelight/POWER"
+      command_topic: "cmnd/livingroom/sidelight/POWER"
+      retain: true
+    - platform: mqtt
+      name: "Samuel's Light"
+      state_topic: "stat/samuelsroom/lamp/POWER"
+      command_topic: "cmnd/samuelsroom/lamp/POWER"
+      retain: true
+  scripts.yaml: |
+    # Scripts
+  switch.yaml: |
+    # Switch definitions
+    - platform: mqtt
+      name: "Test Device"
+      state_topic: "stat/livingroom/testdevice/POWER"
+      command_topic: "cmnd/livingroom/testdevice/POWER"
+      retain: true
+    - platform: mqtt
+      name: "Electric Blanket"
+      state_topic: "stat/bedroom/blanket/POWER"
+      command_topic: "cmnd/bedroom/blanket/POWER"
+      retain: true
+  known_devices.yaml: |  
+    jo-mobile:
+      hide_if_away: false
+      icon:
+      mac: D4:63:C6:72:74:ED
+      name: Joanne
+      picture:
+      track: true
+      vendor: Motorola Mobility LLC, a Lenovo Company
+    chris-mobile:
+      hide_if_away: false
+      icon:
+      mac: 94:65:2D:C9:71:FF
+      name: Chris
+      picture:
+      track: true
+      vendor: unknown
+  .HA_VERSION: |
+    0.62.0.dev0

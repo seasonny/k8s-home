@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus
+  namespace: k8s-home
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: prometheus.home.evns.io
+    http:
+      paths:
+      - backend:
+          serviceName: prometheus
+          servicePort: 80

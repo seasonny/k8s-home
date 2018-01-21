@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: k8s-home
+  labels:
+    app: mosquitto
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      containers:
+        - name: mosquitto
+          image: evns/rpi-mosquitto:v2
+          imagePullPolicy: IfNotPresent
+          command: ["/usr/sbin/mosquitto", "-c", "/etc/mosquitto/mosquitto.conf"]
+          volumeMounts:
+          - mountPath: "/etc/mosquitto/mosquitto.conf"
+            subPath: mosquitto.conf
+            name: "config"
+          - mountPath: "/var/lib/mosquitto/mosquitto.db"
+            name: "mosquitto-db"
+      volumes:
+        - name: config
+          configMap:
+            name: mosquitto-conf
+        - name: mosquitto-db
+          hostPath:
+            type: FileOrCreate
+            path: /k8s-home/mosquitto/mosquitto.db
+       
