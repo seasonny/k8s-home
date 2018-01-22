@@ -16,6 +16,7 @@ spec:
       labels:
         app: home-assistant
     spec:
+      hostNetwork: true
       containers:
         - name: home-assistant
           image: evns/rpi-home-assistant

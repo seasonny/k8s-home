@@ -27,6 +27,29 @@ data:
       trigger:
       - at: '23:10:00'
         platform: time
+    - alias: Turn Off Lights on Leaving
+      trigger:
+        - entity_id: group.all_devices
+          platform: state
+          to: not_home
+      condition: []
+      action:
+        - data:
+            entity_id: group.all_lights
+          service: light.turn_off
+    - alias: Turn On Lights on Arrival
+      trigger:
+        - entity_id: group.all_devices
+          platform: state
+          to: home
+      condition:
+        - after: sunset
+          after_offset: -01:00:00
+          condition: sun
+      action:
+        - data:
+            entity_id: group.all_lights
+          service: light.turn_off
   configuration.yaml: |
     # - - - - - - - - - - - - - - - - - - - -
     #    Core Configuration
