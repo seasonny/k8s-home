@@ -8,12 +8,10 @@ data:
     # Mosquitto Config File
     pid_file /var/run/mosquitto.pid
 
-    persistence true
-    persistence_location /var/lib/mosquitto/
+    persistence false
 
     # Logging Configuration
     log_dest stdout
-
     log_type error
     log_type warning
     log_type notice
