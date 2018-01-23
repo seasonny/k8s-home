@@ -1,145 +1,54 @@
-kind: ConfigMap
 apiVersion: v1
-metadata:
-  name: hass-config
-  namespace: k8s-home
 data:
-  automations.yaml: |
-    # Automations
-    - alias: Samuel's Bedtime
-      trigger:
-      - at: '20:00:00'
-        platform: time
-      action:
-        entity_id: light.samuels_light
-        service: light.turn_off
-    - alias: Electric Blanket On
-      action:
-        entity_id: switch.electric_blanket
-        service: switch.turn_on
-      trigger:
-      - at: '22:30:00'
-        platform: time
-    - alias: Electric Blanket Off
-      action:
-        entity_id: switch.electric_blanket
-        service: switch.turn_off
-      trigger:
-      - at: '23:10:00'
-        platform: time
-    - alias: Turn Off Lights on Leaving
-      trigger:
-        - entity_id: group.all_devices
-          platform: state
-          to: not_home
-      condition: []
-      action:
-        - data:
-            entity_id: group.all_lights
-          service: light.turn_off
-    - alias: Turn On Lights on Arrival
-      trigger:
-        - entity_id: group.all_devices
-          platform: state
-          to: home
-      condition:
-        - after: sunset
-          after_offset: -01:00:00
-          condition: sun
-      action:
-        - data:
-            entity_id: group.all_lights
-          service: light.turn_off
-  configuration.yaml: |
-    # - - - - - - - - - - - - - - - - - - - -
-    #    Core Configuration
-    # - - - - - - - - - - - - - - - - - - - -
-    homeassistant:
-      # Name of the location where Home Assistant is running
-      name: Home
-      # Location required to calculate the time the sun rises and sets
-      latitude: 51.98781
-      longitude: -0.18835
-      # Impacts weather/sunrise data (altitude above sea level in meters)
-      elevation: 0
-      # metric for Metric, imperial for Imperial
-      unit_system: metric
-      # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-      time_zone: Europe/London
-      # Customization file
-      #customize: !include customize.yaml
-
-    sun:
-
-    # - - - - - - - - - - - - - - - - - - - -
-    #    MQTT Broker Config
-    # - - - - - - - - - - - - - - - - - - - -
-    mqtt:
-      broker: 192.168.0.101
-      port: 1883
-
-    # - - - - - - - - - - - - - - - - - - - -
-    #    Google Assistant
-    # - - - - - - - - - - - - - - - - - - - -
-    google_assistant:
-      project_id: !secret google-project
-      client_id: !secret google-client_id
-      access_token: !secret google-access_token
-      api_key: !secret google-api_key 
-      exposed_domains:
-        - switch
-        - light
-        - group
-
-    # - - - - - - - - - - - - - - - - - - - -
-    #    Core Enables
-    # - - - - - - - - - - - - - - - - - - - -
-    http:
-      api_password: !secret http_password
-      base_url: hass.home.evns.io
-
-    # Enable frontend and configuration panels
-    frontend:
-    config:
-
-    # Discover some devices automatically
-    discovery:
-
-    # Allows you to issue voice commands from the frontend in enabled browsers
-    conversation:
-
-    # Enables support for tracking state changes over time
-    history:
-
-    # View all events in a logbook
-    logbook:
-
-    # Text to speech
-    tts:
-      - platform: google
-
-    # Chromecast
-    media_player:
-      - platform: cast
-        host: 192.168.0.110 # fixed ip set by router
-      - platform: cast
-        host: 192.168.0.111 # fixed ip set by router
-
-    device_tracker:
-      - platform: sky_hub
-        host: 192.168.0.1
-        track_new_devices: no
-
-    # - - - - - - - - - - - - - - - - - - - -
-    #    Includes
-    # - - - - - - - - - - - - - - - - - - - -
-
-    switch: !include switch.yaml
-    light: !include light.yaml
-    group: !include groups.yaml
-    automation: !include automations.yaml
-    script: !include scripts.yaml
-  groups.yaml: |
+  automations.yaml: "# - - - - - - - - - - - - - - - - - - - -\n#    Time Based\n#
+    - - - - - - - - - - - - - - - - - - - -\n- alias: Samuel's Bedtime\n  trigger:\n
+    \ - at: '20:00:00'\n    platform: time\n  action:\n    entity_id: light.samuels_light\n
+    \   service: light.turn_off\n\n- alias: Electric Blanket On\n  action:\n    entity_id:
+    switch.electric_blanket\n    service: switch.turn_on\n  trigger:\n  - at: '22:30:00'\n
+    \   platform: time\n\n- alias: Electric Blanket Off\n  action:\n    entity_id:
+    switch.electric_blanket\n    service: switch.turn_off\n  trigger:\n  - at: '23:10:00'\n
+    \   platform: time\n\n\n# - - - - - - - - - - - - - - - - - - - -\n#    Presence
+    Based\n# - - - - - - - - - - - - - - - - - - - -\n- alias: Turn Off Lights on
+    Leaving\n  trigger:\n    - entity_id: group.all_devices\n      platform: state\n
+    \     to: not_home\n  condition: []\n  action:\n    - data:\n        entity_id:
+    group.all_lights\n      service: light.turn_off\n\n- alias: Turn On Lights on
+    Arrival\n  trigger:\n    - entity_id: group.all_devices\n      platform: state\n
+    \     to: home\n  condition:\n    - after: sunset\n      after_offset: -01:00:00\n
+    \     condition: sun\n  action:\n    - data:\n        entity_id: group.all_lights\n
+    \     service: light.turn_off\n\n- alias: Alert when Chris arrives home\n  trigger:\n
+    \   - platform: state\n      entity_id: device_tracker.chrismobile\n      to:
+    home\n  condition:\n    - condition: state\n      entity_id: input_boolean.voice_alerts\n
+    \     state: 'on'\n  action:\n    - service: tts.google_say\n      data:\n        entity_id:
+    media_player.living_room_speaker\n        message: 'Chris has arrived home'\n\n-
+    alias: Alert when Jo arrives home\n  trigger:\n    - platform: state\n      entity_id:
+    device_tracker.chrismobile\n      to: home\n  condition: \n    - condition: state\n
+    \     entity_id: input_boolean.voice_alerts\n      state: 'on'\n  action:\n    -
+    service: tts.google_say\n      data:\n        entity_id: media_player.living_room_speaker\n
+    \       message: 'Joanne has arrived home'"
+  configuration.yaml: "# - - - - - - - - - - - - - - - - - - - -\n#    Core Configuration\n#
+    - - - - - - - - - - - - - - - - - - - -\nhomeassistant:\n  name: Home\n  latitude:
+    51.98781\n  longitude: -0.18835\n  elevation: 0\n  unit_system: metric\n  time_zone:
+    Europe/London\n  # Customization file\n  #customize: !include customize.yaml\n\nsun:\n\n#
+    - - - - - - - - - - - - - - - - - - - -\n#    Core Enables\n# - - - - - - - -
+    - - - - - - - - - - - -\nhttp:\n  api_password: !secret http_password\n  base_url:
+    hass.home.evns.io\n\n# Enable frontend and configuration panels\nfrontend:\nconfig:\n\n#
+    Discover some devices automatically\ndiscovery:\n\n# Allows you to issue voice
+    commands from the frontend in enabled browsers\nconversation:\n\n# Enables support
+    for tracking state changes over time\nhistory:\n\n# View all events in a logbook\nlogbook:\n\n#
+    Text to speech\ntts:\n  - platform: google\n\n# - - - - - - - - - - - - - - -
+    - - - - -\n#    Extras\n# - - - - - - - - - - - - - - - - - - - -\n\n# MQTT Broker\nmqtt:\n
+    \ broker: 192.168.0.101\n  port: 1883\n\n# Google Assistant\ngoogle_assistant:\n
+    \ project_id: !secret google-project\n  client_id: !secret google-client_id\n
+    \ access_token: !secret google-access_token\n  api_key: !secret google-api_key
+    \n  exposed_domains:\n    - switch\n    - light\n    - group\n\n# Chromecast\nmedia_player:\n
+    \ - platform: cast\n    host: 192.168.0.110 # fixed ip set by router\n  - platform:
+    cast\n    host: 192.168.0.111 # fixed ip set by router\n\n# Sky Hub Device Tracker\ndevice_tracker:\n
+    \ - platform: sky_hub\n    host: 192.168.0.1\n    track_new_devices: no\n\n# -
+    - - - - - - - - - - - - - - - - - - -\n#    Includes\n# - - - - - - - - - - -
+    - - - - - - - - -\n\ninput_boolean: !include input_boolean.yaml\nswitch: !include
+    switch.yaml\nlight: !include light.yaml\ngroup: !include groups.yaml\nautomation:
+    !include automations.yaml\nscript: !include scripts.yaml"
+  groups.yaml: |-
     # Entity Groups
     living_room:
       name: "Living Room"
@@ -149,6 +58,7 @@ data:
         - light.living_room_side_light
         - switch.test_device
         - media_player.living_room_tv
+        - media_player.living_room_speaker
     main_bedroom:
       name: "Main Bedroom"
       view: yes
@@ -160,38 +70,11 @@ data:
       view: yes
       entities:
         - light.samuels_light
-  light.yaml: |
-    # Light definitions
-    - platform: mqtt
-      name: "Living Room Alcove"
-      state_topic: "stat/livingroom/alcovelight/POWER"
-      command_topic: "cmnd/livingroom/alcovelight/POWER"
-      retain: true
-    - platform: mqtt
-      name: "Living Room Side Light"
-      state_topic: "stat/livingroom/sidelight/POWER"
-      command_topic: "cmnd/livingroom/sidelight/POWER"
-      retain: true
-    - platform: mqtt
-      name: "Samuel's Light"
-      state_topic: "stat/samuelsroom/lamp/POWER"
-      command_topic: "cmnd/samuelsroom/lamp/POWER"
-      retain: true
-  scripts.yaml: |
-    # Scripts
-  switch.yaml: |
-    # Switch definitions
-    - platform: mqtt
-      name: "Test Device"
-      state_topic: "stat/livingroom/testdevice/POWER"
-      command_topic: "cmnd/livingroom/testdevice/POWER"
-      retain: true
-    - platform: mqtt
-      name: "Electric Blanket"
-      state_topic: "stat/bedroom/blanket/POWER"
-      command_topic: "cmnd/bedroom/blanket/POWER"
-      retain: true
-  known_devices.yaml: |  
+  input_boolean.yaml: |-
+    voice_alerts:
+        name: Voice Alerts
+        initial: on
+  known_devices.yaml: |-
     jo-mobile:
       hide_if_away: false
       icon:
@@ -208,3 +91,37 @@ data:
       picture:
       track: true
       vendor: unknown
+  light.yaml: |-
+    # Light definitions
+    - platform: mqtt
+      name: "Living Room Alcove"
+      state_topic: "stat/livingroom/alcovelight/POWER"
+      command_topic: "cmnd/livingroom/alcovelight/POWER"
+      retain: true
+    - platform: mqtt
+      name: "Living Room Side Light"
+      state_topic: "stat/livingroom/sidelight/POWER"
+      command_topic: "cmnd/livingroom/sidelight/POWER"
+      retain: true
+    - platform: mqtt
+      name: "Samuel's Light"
+      state_topic: "stat/samuelsroom/lamp/POWER"
+      command_topic: "cmnd/samuelsroom/lamp/POWER"
+      retain: true
+  scripts.yaml: ""
+  switch.yaml: |-
+    # Switch definitions
+    - platform: mqtt
+      name: "Test Device"
+      state_topic: "stat/livingroom/testdevice/POWER"
+      command_topic: "cmnd/livingroom/testdevice/POWER"
+      retain: true
+    - platform: mqtt
+      name: "Electric Blanket"
+      state_topic: "stat/bedroom/blanket/POWER"
+      command_topic: "cmnd/bedroom/blanket/POWER"
+      retain: true
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: hass-config
