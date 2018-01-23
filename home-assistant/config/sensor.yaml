@@ -1,0 +1,9 @@
+- platform: mqtt
+  state_topic: "home/livingroom/temperature"
+  name: "Living Room Temperature"
+  unit_of_measurement: '°C'
+
+- platform: mqtt
+  state_topic: "home/livingroom/humidity"
+  name: "Living Room Humidity"
+  unit_of_measurement: '%'
