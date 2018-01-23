@@ -43,6 +43,9 @@ spec:
           - mountPath: "/config/scripts.yaml"
             subPath: scripts.yaml
             name: "config"
+          - mountPath: "/config/sensor.yaml"
+            subPath: sensor.yaml
+            name: "config"
           - mountPath: "/config/switch.yaml"
             subPath: switch.yaml
             name: "config"
