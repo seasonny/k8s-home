@@ -1,0 +1,16 @@
+jo-mobile:
+  hide_if_away: false
+  icon:
+  mac: D4:63:C6:72:74:ED
+  name: Joanne
+  picture:
+  track: true
+  vendor: Motorola Mobility LLC, a Lenovo Company
+chris-mobile:
+  hide_if_away: false
+  icon:
+  mac: 94:65:2D:C9:71:FF
+  name: Chris
+  picture:
+  track: true
+  vendor: unknown

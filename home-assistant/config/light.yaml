@@ -1,0 +1,16 @@
+# Light definitions
+- platform: mqtt
+  name: "Living Room Alcove"
+  state_topic: "stat/livingroom/alcovelight/POWER"
+  command_topic: "cmnd/livingroom/alcovelight/POWER"
+  retain: true
+- platform: mqtt
+  name: "Living Room Side Light"
+  state_topic: "stat/livingroom/sidelight/POWER"
+  command_topic: "cmnd/livingroom/sidelight/POWER"
+  retain: true
+- platform: mqtt
+  name: "Samuel's Light"
+  state_topic: "stat/samuelsroom/lamp/POWER"
+  command_topic: "cmnd/samuelsroom/lamp/POWER"
+  retain: true

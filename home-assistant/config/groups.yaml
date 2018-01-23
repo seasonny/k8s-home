@@ -1,0 +1,21 @@
+# Entity Groups
+living_room:
+  name: "Living Room"
+  view: yes
+  entities:
+    - light.living_room_alcove
+    - light.living_room_side_light
+    - switch.test_device
+    - media_player.living_room_tv
+    - media_player.living_room_speaker
+main_bedroom:
+  name: "Main Bedroom"
+  view: yes
+  entities:
+    - switch.electric_blanket
+    - media_player.bedroom_tv
+samuel_bedroom:
+  name: "Samuel's Bedroom"
+  view: yes
+  entities:
+    - light.samuels_light

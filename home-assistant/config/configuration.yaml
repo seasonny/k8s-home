@@ -1,0 +1,85 @@
+# - - - - - - - - - - - - - - - - - - - -
+#    Core Configuration
+# - - - - - - - - - - - - - - - - - - - -
+homeassistant:
+  name: Home
+  latitude: 51.98781
+  longitude: -0.18835
+  elevation: 0
+  unit_system: metric
+  time_zone: Europe/London
+  # Customization file
+  #customize: !include customize.yaml
+
+sun:
+
+# - - - - - - - - - - - - - - - - - - - -
+#    Core Enables
+# - - - - - - - - - - - - - - - - - - - -
+http:
+  api_password: !secret http_password
+  base_url: hass.home.evns.io
+
+# Enable frontend and configuration panels
+frontend:
+config:
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Text to speech
+tts:
+  - platform: google
+
+# - - - - - - - - - - - - - - - - - - - -
+#    Extras
+# - - - - - - - - - - - - - - - - - - - -
+
+# MQTT Broker
+mqtt:
+  broker: 192.168.0.101
+  port: 1883
+
+# Google Assistant
+google_assistant:
+  project_id: !secret google-project
+  client_id: !secret google-client_id
+  access_token: !secret google-access_token
+  api_key: !secret google-api_key 
+  exposed_domains:
+    - switch
+    - light
+    - group
+
+# Chromecast
+media_player:
+  - platform: cast
+    host: 192.168.0.110 # fixed ip set by router
+  - platform: cast
+    host: 192.168.0.111 # fixed ip set by router
+
+# Sky Hub Device Tracker
+device_tracker:
+  - platform: sky_hub
+    host: 192.168.0.1
+    track_new_devices: no
+
+# - - - - - - - - - - - - - - - - - - - -
+#    Includes
+# - - - - - - - - - - - - - - - - - - - -
+
+input_boolean: !include input_boolean.yaml
+switch: !include switch.yaml
+light: !include light.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

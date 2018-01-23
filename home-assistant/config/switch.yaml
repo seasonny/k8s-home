@@ -1,0 +1,11 @@
+# Switch definitions
+- platform: mqtt
+  name: "Test Device"
+  state_topic: "stat/livingroom/testdevice/POWER"
+  command_topic: "cmnd/livingroom/testdevice/POWER"
+  retain: true
+- platform: mqtt
+  name: "Electric Blanket"
+  state_topic: "stat/bedroom/blanket/POWER"
+  command_topic: "cmnd/bedroom/blanket/POWER"
+  retain: true

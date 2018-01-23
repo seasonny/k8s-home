@@ -1,0 +1,85 @@
+# - - - - - - - - - - - - - - - - - - - -
+#    Time Based
+# - - - - - - - - - - - - - - - - - - - -
+- alias: Samuel's Bedtime
+  trigger:
+  - at: '20:00:00'
+    platform: time
+  action:
+    entity_id: light.samuels_light
+    service: light.turn_off
+
+- alias: Electric Blanket On
+  action:
+    entity_id: switch.electric_blanket
+    service: switch.turn_on
+  trigger:
+  - at: '22:30:00'
+    platform: time
+
+- alias: Electric Blanket Off
+  action:
+    entity_id: switch.electric_blanket
+    service: switch.turn_off
+  trigger:
+  - at: '23:10:00'
+    platform: time
+
+
+# - - - - - - - - - - - - - - - - - - - -
+#    Presence Based
+# - - - - - - - - - - - - - - - - - - - -
+- alias: Turn Off Lights on Leaving
+  trigger:
+    - entity_id: group.all_devices
+      platform: state
+      to: not_home
+  condition: []
+  action:
+    - data:
+        entity_id: group.all_lights
+      service: light.turn_off
+
+- alias: Turn On Lights on Arrival
+  trigger:
+    - entity_id: group.all_devices
+      platform: state
+      to: home
+  condition:
+    - after: sunset
+      after_offset: -01:00:00
+      condition: sun
+  action:
+    - data:
+        entity_id: group.all_lights
+      service: light.turn_off
+
+- alias: Alert when Chris arrives home
+  trigger:
+    - platform: state
+      entity_id: device_tracker.chrismobile
+      to: home
+  condition:
+    - condition: state
+      entity_id: input_boolean.voice_alerts
+      state: 'on'
+  action:
+    - service: tts.google_say
+      data:
+        entity_id: media_player.living_room_speaker
+        message: 'Chris has arrived home'
+
+- alias: Alert when Jo arrives home
+  trigger:
+    - platform: state
+      entity_id: device_tracker.chrismobile
+      to: home
+  condition: 
+    - condition: state
+      entity_id: input_boolean.voice_alerts
+      state: 'on'
+  action:
+    - service: tts.google_say
+      data:
+        entity_id: media_player.living_room_speaker
+        message: 'Joanne has arrived home'
