@@ -19,9 +19,10 @@ spec:
       hostNetwork: true
       containers:
         - name: home-assistant
-          image: evns/rpi-home-assistant
+          image: evns/rpi-home-assistant:v4
           imagePullPolicy: IfNotPresent
           volumeMounts:
+          # Configuration
           - mountPath: "/config/automations.yaml"
             subPath: automations.yaml
             name: "config"
@@ -31,6 +32,9 @@ spec:
           - mountPath: "/config/groups.yaml"
             subPath: groups.yaml
             name: "config"
+          - mountPath: "/config/input_boolean.yaml"
+            subPath: input_boolean.yaml
+            name: "config"
           - mountPath: "/config/light.yaml"
             subPath: light.yaml
             name: "config"
@@ -39,9 +43,6 @@ spec:
             name: "config"
           - mountPath: "/config/switch.yaml"
             subPath: switch.yaml
-            name: "config"
-          - mountPath: "/config/.HA_VERSION"
-            subPath: .HA_VERSION
             name: "config"
           - mountPath: "/config/known_devices.yaml"
             subPath: known_devices.yaml

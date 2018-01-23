@@ -208,5 +208,3 @@ data:
       picture:
       track: true
       vendor: unknown
-  .HA_VERSION: |
-    0.62.0.dev0
