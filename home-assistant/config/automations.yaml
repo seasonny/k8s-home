@@ -25,7 +25,6 @@
   - at: '23:10:00'
     platform: time
 
-
 # - - - - - - - - - - - - - - - - - - - -
 #    Presence Based
 # - - - - - - - - - - - - - - - - - - - -
@@ -74,7 +73,7 @@
     - platform: state
       entity_id: device_tracker.chrismobile
       to: home
-  condition: 
+  condition:
     - condition: state
       entity_id: input_boolean.voice_alerts
       state: 'on'

@@ -54,7 +54,7 @@ google_assistant:
   project_id: !secret google-project
   client_id: !secret google-client_id
   access_token: !secret google-access_token
-  api_key: !secret google-api_key 
+  api_key: !secret google-api_key
   exposed_domains:
     - switch
     - light
