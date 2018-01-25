@@ -38,6 +38,15 @@ logbook:
 
 # Expose metrics to prometheus
 prometheus:
+  include:
+    domains:
+      - sensor
+      - light
+      - switch
+      - media_player
+      - weather
+      - device_tracker
+      - automation
 
 # Text to speech
 tts:
@@ -80,6 +89,7 @@ device_tracker:
 #    Includes
 # - - - - - - - - - - - - - - - - - - - -
 
+history_graph: !include history_graph.yaml
 sensor: !include sensor.yaml
 input_boolean: !include input_boolean.yaml
 switch: !include switch.yaml

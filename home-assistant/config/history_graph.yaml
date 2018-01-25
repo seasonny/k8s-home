@@ -1,0 +1,21 @@
+lights:
+  name: Lights Graph
+  entities:
+    - light.living_room_alcove
+    - light.living_room_side_light
+    - light.samuels_light
+  hours_to_show: 168 # 7 days
+  refresh: 60
+temperature:
+  name: Temperature
+  entities:
+    - sensor.living_room_temperature
+  hours_to_show: 168 # 7 days
+  refresh: 60
+presence:
+  name: Presence
+  entities:
+    - device_tracker.chrismobile
+    - device_tracker.jomobile
+  hours_to_show: 168 # 7 days
+  refresh: 60

@@ -33,6 +33,14 @@ samuel_bedroom:
   entities:
     - light.samuels_light
 
+graphs:
+  name: "Graphs"
+  view: yes
+  entities:
+    - history_graph.temperature
+    - history_graph.lights_graph
+    - history_graph.presence
+
 # Cards
 downstairs_devices:
   name: Downstairs

@@ -7,6 +7,9 @@ metadata:
     app: home-assistant
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant
   revisionHistoryLimit: 2
   strategy:
     type: Recreate
@@ -48,6 +51,9 @@ spec:
             name: "config"
           - mountPath: "/config/known_devices.yaml"
             subPath: known_devices.yaml
+            name: "config"
+          - mountPath: "/config/history_graph.yaml"
+            subPath: history_graph.yaml
             name: "config"
           # Secrets
           - name: secrets

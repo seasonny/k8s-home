@@ -126,6 +126,15 @@ data:
 
     # Expose metrics to prometheus
     prometheus:
+      include:
+        domains:
+          - sensor
+          - light
+          - switch
+          - media_player
+          - weather
+          - device_tracker
+          - automation
 
     # Text to speech
     tts:
@@ -168,6 +177,7 @@ data:
     #    Includes
     # - - - - - - - - - - - - - - - - - - - -
 
+    history_graph: !include history_graph.yaml
     sensor: !include sensor.yaml
     input_boolean: !include input_boolean.yaml
     switch: !include switch.yaml
@@ -211,6 +221,14 @@ data:
       entities:
         - light.samuels_light
 
+    graphs:
+      name: "Graphs"
+      view: yes
+      entities:
+        - history_graph.temperature
+        - history_graph.lights_graph
+        - history_graph.presence
+
     # Cards
     downstairs_devices:
       name: Downstairs
@@ -228,6 +246,28 @@ data:
       name: Controls
       entities:
         - input_boolean.voice_alerts
+  history_graph.yaml: |-
+    lights:
+      name: Lights Graph
+      entities:
+        - light.living_room_alcove
+        - light.living_room_side_light
+        - light.samuels_light
+      hours_to_show: 168 # 7 days
+      refresh: 60
+    temperature:
+      name: Temperature
+      entities:
+        - sensor.living_room_temperature
+      hours_to_show: 168 # 7 days
+      refresh: 60
+    presence:
+      name: Presence
+      entities:
+        - device_tracker.chrismobile
+        - device_tracker.jomobile
+      hours_to_show: 168 # 7 days
+      refresh: 60
   input_boolean.yaml: |-
     voice_alerts:
         name: Voice Alerts
