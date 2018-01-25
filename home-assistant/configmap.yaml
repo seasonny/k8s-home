@@ -218,6 +218,7 @@ data:
     upstairs_devices:
       name: Upstairs
       entities:
+        - light.samuels_light
         - switch.electric_blanket
 
     controls:
