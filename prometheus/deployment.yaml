@@ -26,9 +26,15 @@ spec:
           volumeMounts:
           - mountPath: "/prometheus"
             name: "config"
+          - mountPath: "/data"
+            name: data
       volumes:
         - name: config
           configMap:
             name: prometheus-conf
+        - name: data
+          hostPath:
+            type: DirectoryOrCreate
+            path: /k8s-home/prometheus/data
 
  
