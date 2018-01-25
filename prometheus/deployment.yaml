@@ -16,8 +16,19 @@ spec:
       labels:
         app: prometheus
     spec:
+      serviceAccountName: prometheus
       containers:
         - name: prometheus
-          image: nginx
+          image: evns/rpi-prometheus:v2.1.0
           imagePullPolicy: IfNotPresent
+          command: ["/bin/prometheus", "--config.file", "/prometheus/prometheus.yml", 
+                    "--web.external-url", "https://prometheus.home.evns.io"]
+          volumeMounts:
+          - mountPath: "/prometheus"
+            name: "config"
+      volumes:
+        - name: config
+          configMap:
+            name: prometheus-conf
+
  
