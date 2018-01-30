@@ -33,14 +33,6 @@ samuel_bedroom:
   entities:
     - light.samuels_light
 
-graphs:
-  name: "Graphs"
-  view: yes
-  entities:
-    - history_graph.temperature
-    - history_graph.lights_graph
-    - history_graph.presence
-
 # Cards
 downstairs_devices:
   name: Downstairs
@@ -58,3 +50,10 @@ controls:
   name: Controls
   entities:
     - input_boolean.voice_alerts
+    - input_boolean.motion_detection
+
+living_room_lights:
+  name: Living Room Lights
+  entities:
+    - light.living_room_alcove
+    - light.living_room_side_light

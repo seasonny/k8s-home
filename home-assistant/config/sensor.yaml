@@ -6,3 +6,9 @@
   state_topic: "home/livingroom/humidity"
   name: "Living Room Humidity"
   unit_of_measurement: '%'
+- platform: mqtt
+  state_topic: "home/livingroom/light"
+  name: "Living Room Light"
+- platform: mqtt
+  state_topic: "home/livingroom/motion"
+  name: "Living Room Motion"

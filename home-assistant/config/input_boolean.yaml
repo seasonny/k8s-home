@@ -1,3 +1,6 @@
 voice_alerts:
     name: Voice Alerts
     initial: on
+motion_detection:
+    name: Motion Detection
+    initial: on

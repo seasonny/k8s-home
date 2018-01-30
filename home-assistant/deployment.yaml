@@ -52,9 +52,6 @@ spec:
           - mountPath: "/config/known_devices.yaml"
             subPath: known_devices.yaml
             name: "config"
-          - mountPath: "/config/history_graph.yaml"
-            subPath: history_graph.yaml
-            name: "config"
           # Secrets
           - name: secrets
             mountPath: "/config/secrets.yaml"

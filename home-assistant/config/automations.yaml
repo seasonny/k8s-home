@@ -1,4 +1,20 @@
 # - - - - - - - - - - - - - - - - - - - -
+# Motion Based
+# - - - - - - - - - - - - - - - - - - - -
+- alias: Living Room Lights On
+  action:
+  - service: light.turn_on
+    entity_id: group.living_room_lights
+  condition:
+  - condition: state
+    entity_id: input_boolean.motion_detection
+    state: 'on'
+  trigger:
+  - entity_id: sensor.living_room_motion
+    platform: state
+    to: '1'
+
+# - - - - - - - - - - - - - - - - - - - -
 #    Time Based
 # - - - - - - - - - - - - - - - - - - - -
 - alias: Samuel's Bedtime
