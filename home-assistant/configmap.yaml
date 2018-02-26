@@ -4,7 +4,7 @@ data:
     # - - - - - - - - - - - - - - - - - - - -
     # Motion Based
     # - - - - - - - - - - - - - - - - - - - -
-    - alias: Living Room Lights On
+    - alias: Motion - Living Room Lights On
       action:
       - service: light.turn_on
         entity_id: group.living_room_lights
@@ -16,6 +16,20 @@ data:
       - entity_id: sensor.living_room_motion
         platform: state
         to: '1'
+
+    - alias: Motion - Living Room Lights Off
+      action:
+      - service: light.turn_off
+        entity_id: group.living_room_lights
+      condition:
+      - condition: state
+        entity_id: input_boolean.motion_detection
+        state: 'on'
+      trigger:
+      - entity_id: sensor.living_room_motion
+        platform: state
+        to: '0'
+        for: '01:00:00'
 
     # - - - - - - - - - - - - - - - - - - - -
     #    Time Based
@@ -47,16 +61,16 @@ data:
     # - - - - - - - - - - - - - - - - - - - -
     #    Presence Based
     # - - - - - - - - - - - - - - - - - - - -
-    - alias: Turn Off Lights on Leaving
-      trigger:
-        - entity_id: group.all_devices
-          platform: state
-          to: not_home
-      condition: []
-      action:
-        - data:
-            entity_id: group.all_lights
-          service: light.turn_off
+    # - alias: Turn Off Lights on Leaving
+    #   trigger:
+    #     - entity_id: group.all_devices
+    #       platform: state
+    #       to: not_home
+    #   condition: []
+    #   action:
+    #     - data:
+    #         entity_id: group.all_lights
+    #       service: light.turn_off
 
     - alias: Turn On Lights on Arrival
       trigger:
