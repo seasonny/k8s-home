@@ -1,5 +1,6 @@
 # Views (tabs)
 default_view:
+  name: "Home"
   view: yes
   entities:
     - sensor.living_room_temperature

@@ -9,5 +9,6 @@ secrets.yaml
 # Home Assistant Config
 home-assistant/config_copy
 home-assistant/config/*
+!home-assistant/config/www
 !home-assistant/config/*.yaml
 home-assistant/config/secrets.yaml
