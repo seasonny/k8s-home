@@ -59,6 +59,8 @@ spec:
           # Stateful host mounts
           - name: deps
             mountPath: "/config/deps"
+          - name: www
+            mountPath: "/config/www"
           - name: "db"
             mountPath: "/config/home-assistant_v2.db"
       volumes:
@@ -72,6 +74,10 @@ spec:
           hostPath:
             type: DirectoryOrCreate
             path: /k8s-home/home-assistant/config/deps
+        - name: www
+          hostPath:
+            type: DirectoryOrCreate
+            path: /k8s-home/home-assistant/config/www
         - name: db
           hostPath:
             type: FileOrCreate
