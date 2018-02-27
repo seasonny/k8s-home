@@ -58,17 +58,6 @@
 # - - - - - - - - - - - - - - - - - - - -
 #    Presence Based
 # - - - - - - - - - - - - - - - - - - - -
-# - alias: Turn Off Lights on Leaving
-#   trigger:
-#     - entity_id: group.all_devices
-#       platform: state
-#       to: not_home
-#   condition: []
-#   action:
-#     - data:
-#         entity_id: group.all_lights
-#       service: light.turn_off
-
 - alias: Turn On Lights on Arrival
   trigger:
     - entity_id: group.all_devices
@@ -80,8 +69,8 @@
       condition: sun
   action:
     - data:
-        entity_id: group.all_lights
-      service: light.turn_off
+        entity_id: group.living_room_lights
+      service: light.turn_on
 
 - alias: Alert when Chris arrives home
   trigger:
@@ -96,7 +85,7 @@
     - service: tts.google_say
       data:
         entity_id: media_player.living_room_speaker
-        message: 'Chris has arrived home'
+        message: 'Daddy is home!'
 
 - alias: Alert when Jo arrives home
   trigger:
@@ -111,4 +100,4 @@
     - service: tts.google_say
       data:
         entity_id: media_player.living_room_speaker
-        message: 'Joanne has arrived home'
+        message: 'Mummy is home!'
